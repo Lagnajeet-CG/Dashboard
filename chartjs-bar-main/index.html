@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Chart</title>
+  <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="script.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+   <!-- <link rel="stylesheet" href="w3.css"> -->
+  <!-- Load jQuery 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>-->
+  <!-- <script src="jquery.min.js"></script> -->
+  <!-- Load Chart.js 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>-->
+  <!-- <script src="Chart.bundle.min.js"></script> -->
+  <link rel="stylesheet" href="rangeSlider.css" />
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.1.0/papaparse.min.js"></script> 
+  <!-- <script src="papaparse.min.js"></script> -->
+</head>
+
+<body class="vh-100">
+  <!-- <body class="vh-100" style="outline: 3px solid #041119; outline-offset: 0px; "> -->
+<!--Header Section-->
+
+  <nav class="navbar bg-body-tertiary w-100" style="background-color: rgba(0,123,189,.9) !important;">
+    <div class="container w-100">
+      <div class="row align-items-center w-100">
+        <div class="col-md-4 float-start">
+          <a class="navbar-brand " href="#" style="margin-left: -20%;">
+            <img src="https://prod.ucwe.capgemini.com/wp-content/themes/capgemini2020/assets/images/logo-white.svg" alt="Logo"  class="d-inline-block align-text-top">  
+          </a>
+        </div>
+        <div class="col-md-4 text-center">  
+          <!-- div {text-align: center;} -->
+          <span class="d-inline h4 text-white" style="font-family: 'Ubuntu';"> </h4>
+          <div class="d-inline align-middle text-center">
+            <div>MEDIA SPEND OPTIMIZATION</div>
+          </div>
+        </div>
+        <div class="col-md-4">
+        </div>
+      </div>
+
+    </div>
+  </nav>
+
+
+  <!--Form Section-->
+
+  <div class="row">
+    <div class="col-md-4 ms-5 mt-4">
+
+      
+      <div class="card my-2 ">
+        <div class="card-header">
+          Type of KPI
+        </div>
+        <div class="card-body">
+
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="y-val" id="cb-cac" value='cac' onclick="updateChart(this.value, '', '');" checked >
+              <label class="form-check-label" for="cb-cac">
+                Customer Acquisition Cost (CAC)
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="y-val" id="cb-clv" value='clv' onclick="updateChart(this.value, '', '');">
+              <label class="form-check-label" for="cb-clv">
+                Customer Lifetime Value
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="y-val" id="cb-roi" value='roi' onclick="updateChart(this.value, '', '');">
+              <label class="form-check-label" for="cb-roi">
+                Return on Investment
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="y-val" id="cb-roas" value='roas' onclick="updateChart(this.value, '', '');">
+              <label class="form-check-label" for="cb-roas">
+                Return on Ad Spend
+              </label>
+            </div>
+    
+        </div>
+      </div>
+
+      <div class="card my-2">
+        <div class="card-header">
+          Date Range
+        </div>
+        <div class="card-body">
+
+          <!-- <div class="input-group mb-3">
+            <select class="form-select" id="inputGroupSelect02" name="Campaign">
+              <option value="">Select Campaign</option>
+              <option value="">Social</option>
+              <option value="">EMail</option>
+              <option value="">SMS</option>
+              <option value="">Vedio</option>
+            </select>
+            <label class="input-group-text" for="inputGroupSelect02">Campaign Type</label>
+          </div> -->
+          
+          <div class="container">
+            <div class="date-range-picker">
+              <div class="row"> 
+                <div class=" col-md-4">
+                   <label for="start-date">Start date:</label>
+                   <input type="date" id="start-date" name="start-date">
+                  </div>
+                  <div class=" col-md-4" style="margin-left: 30px;">
+                     <label for="end-date">End date:</label>
+                      <input type="date" id="end-date" name="end-date">
+                    </div>
+                    <button type="submit" id ="apply-button" style="width:50%; margin-top:20px;" onclick="getDateRange();">Apply</button>
+                   </div>
+                  </div>
+                </div>
+        </div>
+      </div>
+
+      
+      <div class="card mt-2 mb-5">
+        <div class="card-header">
+          KPI Values
+        </div>
+        <div class="card-body">
+
+            <div class='row my-3 mx-2'>
+              <div class='my-2'>
+                <span class="float-start d-inline fw-bolder">Social</span>
+                <span class="float-end" id="social-cost-text">0</span>
+              </div>
+               <input type="range" class="slider" min="0" max="1000" step="100" value='0' id="social-cost" onchange="showValue('social-cost-text', 0, this.value);" style='accent-color: rgba(0,123,189,.9);'>
+              <div id="social-cost" ></div>
+            </div>
+            <div class='row my-3 mx-2'>
+              <div class='my-2'>
+                <span class="float-start d-inline fw-bolder">SMS</span>
+                <span class="float-end" id="sms-cost-text">0</span>
+              </div>
+               <input type="range" class="slider" min="0" max="1000" step="100" value='0' id="sms-cost" onchange="showValue('sms-cost-text', 1, this.value);" style='accent-color: rgba(0,123,189,.9);'> 
+              <div id="sms-cost"></div>
+            </div>
+            <div class='row my-3 mx-2'>
+              <div class='my-2'>
+                <span class="float-start d-inline fw-bolder">Email</span>
+                <span class="float-end" id="email-cost-text">0</span> 
+              </div>
+              <input type="range" class="slider" min="0" max="1000" step="100" value='0' id="email-cost" onchange="showValue('email-cost-text', 2, this.value);" style='accent-color: rgba(0,123,189,.9);'> 
+              <div id="email-cost"></div>
+            </div>
+            <div class='row my-3 mx-2'>
+              <div class='my-2'>
+                <span class="float-start d-inline fw-bolder">Video</span>
+                <span class="float-end" id="video-cost-text">0</span> 
+              </div>
+              <input type="range" class="slider" min="0" max="1000" step="100" value='0' id="video-cost" onchange="showValue('video-cost-text', 3, this.value);" style='accent-color: rgba(0,123,189,.9);'>
+              <div id="video-cost"></div>
+              <button type="button" class="btn btn-primary" style="width:50%; margin-top:20px;">Apply</button>
+              
+            </div>
+        </div>
+      </div>
+      
+
+      
+      <!-- <input id="ex6" type="range" data-slider-min="-5" data-slider-max="20" data-slider-step="1" data-slider-value="3"/>
+<span id="ex6CurrentSliderValLabel">Current Slider Value: <span id="ex6SliderVal">3</span></span> -->
+
+      <!-- <div class="form-check">
+        <input class="form-check-input" type="radio" name="barchart" id="barchart" checked onclick="showBarChart();">
+        <label class="form-check-label" for="barchart">
+          Stacked bar Chart
+        </label>
+      </div> -->
+      <!-- <div class="form-check">
+        <input class="form-check-input" type="radio" name="piechart" id="piechart" onclick="showPieChart();">
+        <label class="form-check-label" for="piechart">
+          Pie Chart
+        </label>
+      </div> -->
+
+      <!-- <div class="form-check">
+        <input class="form-check-input" type="radio" name="linechart" id="linechart" onclick="showLineChart();">
+        <label class="form-check-label" for="linechart">
+          Line Chart
+        </label>
+      </div> -->
+
+      
+
+    </div>
+    
+    <div class="col-md-7 ms-5 mt-5 ">
+      <div class='row mt-5'>
+        <div class="" id="bar-chart-div">
+          <canvas id="barChart2"></canvas>
+        </div>
+      </div>
+      <div class='row'>
+        <div class="" id="bar-chart-div">
+          <canvas id="barChart1"></canvas>
+        </div>
+      </div>
+
+      <!-- <div id="anchor"></div> -->
+      
+
+
+      <!-- <div class='row mt-5'>
+        <div class="" id="bar-chart-div">
+          <canvas id="barChart2"></canvas>
+        </div>
+      </div> -->
+
+      <div class="" id="bar-chart-div">
+        <canvas id="barChart"></canvas>
+      </div>
+
+      <div class="d-none " id="pie-chart-div" style="height: 400px; width: 400px; margin: auto;">
+        <canvas class="" id="pieChart" ></canvas>
+      </div>
+
+
+      
+      <!-- <div class="d-none " id="line-chart-div" >
+        <canvas class="" id="lineChart" ></canvas>
+      </div> -->
+
+    </div>
+
+
+  </div>
+
+
+
+<!--Footer Section-->
+<footer id="sticky-footer" class="flex-shrink-0 p-2 fixed-bottom mt-5 "  style="background-color: rgba(0,123,189,.9) !important;">
+  <div class="container text-center text-white">
+      <small class="footer_text">Confidential and for internal use only. Copyright ©2022.All rights reserved.
+          Capgemini.com</small>
+  </div>
+</footer>
+
+<script src="script1.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>
+  <style>
+.range-form {
+  width: 400px;
+  margin: auto;
+  padding: 50px;
+}
+
+.range-slider {
+  -webkit-appearance: none;
+  /* Override default CSS styles */
+  appearance: none;
+  width: 100%;
+  /* Full-width */
+  height: 10px;
+  border-radius: 5px;
+  /* Specified height */
+  background: #d3d3d3;
+  /* Grey background */
+  outline: none;
+  /* Remove outline */
+  opacity: 0.7;
+  /* Set transparency (for mouse-over effects on hover) */
+  -webkit-transition: .2s;
+  /* 0.2 seconds transition on hover */
+  transition: opacity .2s;
+  &:hover {
+    opacity: 1;
+    /* Fully shown on mouse-over */
+  }
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    /* Override default look */
+    appearance: none;
+    width: 18px;
+    /* Set a specific slider handle width */
+    height: 18px;
+    /* Slider handle height */
+    background: #4CAF50;
+    /* Green background */
+    cursor: pointer;
+    /* Cursor on hover */
+    border-radius: 50%;
+  }
+  &::-moz-range-thumb {
+    width: 18px;
+    /* Set a specific slider handle width */
+    height: 18px;
+    /* Slider handle height */
+    background: #4CAF50;
+    /* Green background */
+    cursor: pointer;
+    /* Cursor on hover */
+  }
+}
+.date-range-picker {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.date-range-picker label 
+
+{
+  margin-right: 0.5rem;
+}
+
+.date-range-picker input {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+}
+
+.date-range-picker button {
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.date-range-picker button:hover {
+  background-color: #0069d9;
+}
+.apply-button {
+  background-color: #5c4caf; /* Green background */
+  color: 	rgb(0,0,255); /* White text */
+  padding: 12px 24px; /* Add padding */
+  text-align: center; /* Center text */
+  text-decoration: none; /* Remove underline */
+  display: inline-block; /* Display as inline block */
+  font-size: 16px; /* Set font size */
+  margin: 20px; /* Add some margin */
+  cursor: pointer; /* Add cursor on hover */
+}
+
+  </style>
+
+  <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous">
+  </script>
+  <script src="rangeSlider.js"></script>
+
+  <!-- <script>
+
+    // $('#anchor').rangeSlider();
+    // $('#anchor').rangeSlider({ skin: 'green', direction: 'horizontal', settings: false, scale: true });
+    // $('#anchor').rangeSlider({},  { step: 10, values: [0], max: 50 });
+
+    $('#social-cost').rangeSlider();
+    $('#social-cost').rangeSlider({ skin: 'green', direction: 'horizontal', settings: false, scale: true });
+    $('#social-cost').rangeSlider({},  { step: 10, values: [0], max: 50, min: 0 });
+
+    $('#sms-cost').rangeSlider();
+    $('#sms-cost').rangeSlider({ skin: 'green', direction: 'horizontal', settings: false, scale: true });
+    $('#sms-cost').rangeSlider({},  { step: 10, values: [0], max: 50, min: 0 });
+    
+    $('#email-cost').rangeSlider();
+    $('#email-cost').rangeSlider({ skin: 'green', direction: 'horizontal', settings: false, scale: true });
+    $('#email-cost').rangeSlider({},  { step: 10, values: [0], max: 50, min: 0 });
+    
+    $('#video-cost').rangeSlider();
+    $('#video-cost').rangeSlider({ skin: 'green', direction: 'horizontal', settings: false, scale: true });
+    $('#video-cost').rangeSlider({},  { step: 10, values: [0], max: 50, min: 0 });
+    
+    // var slider = document.getElementById("myRange");
+    // var output = document.getElementById("demo");
+    // output.innerHTML = slider.value; // Display the default slider value
+
+    // // Update the current slider value (each time you drag the slider handle)
+    // slider.oninput = function() {
+    //     output.innerHTML = this.value;
+    // }
+
+  </script> -->
+  </body>
+
+
+</html>

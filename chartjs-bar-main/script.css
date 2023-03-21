@@ -1,0 +1,86 @@
+body{
+    /*__background-color: aquamarine;__*/
+        font-family: 'Ubuntu';
+}
+
+/*__Header Section__*/
+.new {
+    color: RGB(239, 239, 240);
+    text-align: center;
+    font-weight: bold;
+    font-size:xx-large;
+    height: 55px;
+    width: 100%;
+    background-color: #12cca7;
+    font-family: 'Ubuntu';
+}
+
+.logo{
+    margin-top: 5px;
+    margin-bottom: 5px; 
+    margin-left: 5px;
+    float:left;
+    padding: 5px;
+    font-family: 'Ubuntu';
+}
+
+/*__Form Section__*/
+.new1 {
+    margin: 10px;
+    width: 50%;
+    height: 350px;
+    font-weight: italic;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: medium;
+    border: 1px solid black;  
+    padding: 10px;
+    padding-left:100px;
+    padding-top: 40px;
+    border-radius: 25px;
+    font-family: 'Ubuntu';
+}
+
+/*__Chart Section__*/
+.new3 {
+    margin: 10px;
+    width: 900px;
+    height: 409px;   
+    border: 1px solid black;  
+    border-radius: 25px;
+    font-family: 'Ubuntu';
+}
+
+/*__Footer Section__*/
+.new4 {
+    width: 50%;
+    height: 144px;
+    display: flex;   
+    font-weight: bold;
+    font-size: larger;
+    text-align: center;
+    color:RGB(239, 239, 240);
+   /*__ background-color: blue;__*/
+    background-image: url(backgrnd.png);
+    font-family: 'Ubuntu';
+}
+
+.new4 span{
+    padding-left: 40%;
+    padding-bottom: 10px;
+    align-self: flex-end;
+    font-family: 'Ubuntu';
+}
+
+form {
+    background-size: cover;
+    padding : 5px;
+    font-family: 'Ubuntu';
+}
+
+.stacked-chart-label {
+    display: inline-block;
+    width: 150px;
+    text-align: left;
+    font-family: 'Ubuntu';
+  }
+  

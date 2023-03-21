@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Line Chart Example</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    canvas {
+      display: block;
+      width: 800px;
+      height: 400px;
+      margin: auto;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="myChart"></canvas>
+
+  <script>
+    const chartData = {
+      labels: ['Sunday','Monday','Tuesday','Wednesday'],
+      datasets: [
+        {
+          label: 'Social',
+          data: [71.13821138,9.491745714,9.491745714],
+          // data: [71.13821138],
+          // data: [81.13821138],
+          // // data: [74.13821138,12.491745714,13.491745714],
+          borderColor: 'red',
+          fill: false
+        },
+        {
+          label: 'SMS',
+          // data: [78.35051546],
+           data: [78.35051546,13.06681579,8.711214474],
+          // data: [80.35051546,15.06681579,9.711214474],
+          borderColor: 'blue',
+          fill: false
+        },
+        {
+          label: 'Email',
+          data: [66.52806653,21.384812,10.69242344],
+          // data: [66.52806653],
+          
+          // data: [76.52806653,22.384812,18.69242344],
+
+          borderColor: 'green',
+          fill: false
+        },
+        {
+          label: 'Video',
+          // data: [58.999],
+          data: [58.999, 24.38,11.77],
+          // data: [60.999, 28.38,15.77],
+          borderColor: 'purple',
+          fill: false
+        }
+      ]
+    };
+
+    const chartOptions = {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        xAxes: [{
+          display: true
+        }],
+        yAxes: [{
+          display: true
+        }]
+      }
+    };
+
+    const lineChart = new Chart(document.getElementById('myChart'), {
+      type: 'line',
+      data: chartData,
+      options: chartOptions
+    });
+  </script>
+</body>
+</html>
